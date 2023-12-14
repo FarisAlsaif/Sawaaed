@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dds xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://community.rti.com/schema/7.2.0/rti_routing_service.xsd" version="7.2.0">
+    <types>
+      <const name="MAX_NAME_SIZE" type="int32" value="128"/>
+      <const name="MAX_MSG_SIZE" type="int32" value="512"/>
+      <const name="MAX_NAME_CONTENT" type="int32" value="256"/>
+      <struct name="GuestType">
+        <member name="guestname" type="string" stringMaxLength="MAX_NAME_SIZE" key="true"/>
+      </struct>
+      <struct name="RequestType">
+        <member name="username" type="string" stringMaxLength="MAX_NAME_SIZE" key="true"/>
+        <member name="userrequestbuilding" type="string" stringMaxLength="MAX_NAME_SIZE"/>
+        <member name="userrequestcontent" type="string" stringMaxLength="MAX_NAME_CONTENT" key="true"/>
+      </struct>
+      <struct name="OfferType">
+        <member name="username" type="string" stringMaxLength="MAX_NAME_SIZE" key="true"/>
+        <member name="userofferbuildign" type="string" stringMaxLength="MAX_NAME_SIZE"/>
+        <member name="useroffercontent" type="string" stringMaxLength="MAX_NAME_CONTENT" key="true"/>
+      </struct>
+      <struct name="UserMsg">
+        <member name="fromuser" type="string" stringMaxLength="MAX_NAME_SIZE" key="true"/>
+        <member name="touser" type="string" stringMaxLength="MAX_NAME_SIZE" key="true"/>
+        <member name="usermsg" type="string" stringMaxLength="MAX_MSG_SIZE" key="true"/>
+      </struct>
+    </types>
+
+    <qos_library name="kfupmLibrary">
+      <qos_profile name="guestprofile" base_name="BuiltinQosLib::Pattern.Status">
+      </qos_profile>
+      <qos_profile name="userrequestprofile" base_name="BuiltinQosLib::Pattern.Status">
+        <datareader_qos>
+          <liveliness>
+            <lease_duration>
+              <sec>3</sec>
+              <nanosec>0</nanosec>
+            </lease_duration>
+          </liveliness>
+        </datareader_qos>
+        <datawriter_qos>
+          <liveliness>
+            <lease_duration>
+              <sec>2</sec>
+              <nanosec>0</nanosec>
+            </lease_duration>
+          </liveliness>
+        </datawriter_qos>
+      </qos_profile>
+      <qos_profile name="userofferprofile" base_name="BuiltinQosLib::Pattern.Status">
+        <datareader_qos>
+          <liveliness>
+            <lease_duration>
+              <sec>3</sec>
+              <nanosec>0</nanosec>
+            </lease_duration>
+          </liveliness>
+        </datareader_qos>
+        <datawriter_qos>
+          <liveliness>
+            <lease_duration>
+              <sec>2</sec>
+              <nanosec>0</nanosec>
+            </lease_duration>
+          </liveliness>
+        </datawriter_qos>
+      </qos_profile>
+      <qos_profile name="msgprofile">
+      </qos_profile>
+    </qos_library>
+
+    <domain_library name="kfupmDomain">
+      <domain name="KFUPM_DomainLibrary" domain_id="18">
+        <register_type name="userrequestinfo" type_ref="RequestType"/>
+        <register_type name="userofferinfo" type_ref="OfferType"/>
+        <register_type name="msginfo" type_ref="UserMsg"/>
+        <topic name="userrequestinfoTopic" register_type_ref="userrequestinfo"/>
+        <topic name="userofferinfoTopic" register_type_ref="userofferinfo"/>
+        <topic name="msginfoTopic" register_type_ref="msginfo"/>
+      </domain>
+    </domain_library>
+
+    <domain_participant_library name="KFUPM_ParticipantLibrary">
+      <domain_participant name="KFUPM_Participant" domain_ref="kfupmDomain::KFUPM_DomainLibrary">
+        <publisher name="OfferTypePublisher">
+          <data_writer name="userofferinfoTopicWriter" topic_ref="userofferinfoTopic">
+            <datawriter_qos base_name="kfupmLibrary::userofferprofile">
+            </datawriter_qos>
+          </data_writer>
+        </publisher>
+        <subscriber name="OfferTypeSubscriber">
+          <data_reader name="userofferinfoTopicReader" topic_ref="userofferinfoTopic">
+            <datareader_qos base_name="kfupmLibrary::userofferprofile">
+            </datareader_qos>
+          </data_reader>
+        </subscriber>
+        <publisher name="RequestTypePublisher">
+          <data_writer name="userrequestinfoTopicWriter" topic_ref="userrequestinfoTopic">
+            <datawriter_qos base_name="kfupmLibrary::userrequestprofile">
+            </datawriter_qos>
+          </data_writer>
+        </publisher>
+        <subscriber name="RequestTypeSubscriber">
+          <data_reader name="userrequestinfoTopicReader" topic_ref="userrequestinfoTopic">
+            <datareader_qos base_name="kfupmLibrary::userrequestprofile">
+            </datareader_qos>
+          </data_reader>
+        </subscriber>
+        <publisher name="UserMsgPublisher">
+          <data_writer name="msginfoTopicWriter" topic_ref="msginfoTopic">
+            <datawriter_qos base_name="kfupmLibrary::msgprofile">
+            </datawriter_qos>
+          </data_writer>
+          <publisher_qos base_name="kfupmLibrary::msgprofile">
+          </publisher_qos>
+        </publisher>
+        <subscriber name="UserMsgSubscriber">
+          <data_reader name="msginfoTopicReader" topic_ref="msginfoTopic">
+            <content_filter name="MyFilter" kind="builtin.sql">
+              <expression>(touser MATCH %0)</expression>
+              <expression_parameters>
+                <element>&apos;$(username)&apos;</element>
+              </expression_parameters>
+            </content_filter>
+            <datareader_qos base_name="kfupmLibrary::msgprofile">
+            </datareader_qos>
+          </data_reader>
+          <subscriber_qos base_name="kfupmLibrary::msgprofile">
+          </subscriber_qos>
+        </subscriber>
+      </domain_participant>
+    </domain_participant_library>
+
+</dds>

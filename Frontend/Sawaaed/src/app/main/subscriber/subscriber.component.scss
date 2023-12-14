@@ -1,0 +1,33 @@
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 300px;
+  
+      .form-group {
+        display: flex;
+        flex-direction: column;
+  
+        label {
+          margin-bottom: 5px;
+        }
+  
+        input {
+          padding: 8px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+      }
+  
+      button {
+        margin-top: 10px;
+      }
+    }
+  }
+  

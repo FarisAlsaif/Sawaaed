@@ -1,0 +1,129 @@
+:host {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+}
+button {
+    width: 100%;
+    padding: 20px;
+    margin: 2rem;
+    border: none;
+    border-radius: 10px;
+    background-color: #007bff;
+    color: white;
+    font-size: 3rem;
+    cursor: pointer;
+    
+    &:hover {
+        background-color: darken(#007bff, 10%);
+    }
+}
+
+
+
+// $light-blue: #89CFF0;
+// $soft-gray: #D3D3D3;
+// $dark-blue: #00008B;
+
+// main {
+//     background: linear-gradient(to bottom, $light-blue, $soft-gray);
+//     font-family: 'Arial', sans-serif;
+//     margin: 0;
+//     padding: 0;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     height: 100vh;
+// }
+
+// .login-container {
+//     width: 100%;
+//     max-width: 320px;
+//     margin: 0 auto;
+//     text-align: center;
+    
+//     h1 {
+//         font-size: 1.5rem;
+//         margin-bottom: 20px;
+//     }
+    
+//     .account-types {
+//         display: flex;
+//         justify-content: space-between;
+//         margin-bottom: 20px;
+
+        
+//         .account-type {
+//             width: 48%;
+//             padding: 10px;
+//             border: 1px solid #ccc;
+//             border-radius: 10px;
+            
+//             img {
+//                 max-width: 100%;
+//                 height: auto;
+//             }
+            
+//             p {
+//                 margin-top: 5px;
+//             }
+//         }
+        
+//         .doctor {
+//             // Add specific styles for doctor type if needed
+//         }
+        
+//         .patient {
+//             // Add specific styles for patient type if needed
+//         }
+//     }
+    
+//     .login-form {
+//         background: #f7f7f7;
+//         border-radius: 20px;
+//         padding: 20px;
+        
+//         p {
+//             font-size: 1rem;
+//             color: #333;
+//         }
+        
+//         input {
+//             width: 100%;
+//             padding: 10px 0;
+//             margin: 10px 0;
+//             border: 1px solid #ccc;
+//             border-radius: 10px;
+//         }
+        
+//         .forgot-signup {
+//             display: flex;
+//             justify-content: space-between;
+//             margin-bottom: 20px;
+            
+//             a {
+//                 color: #007bff;
+//                 text-decoration: none;
+//                 font-size: 0.9rem;
+//             }
+//         }
+        
+//         button {
+//             width: 100%;
+//             padding: 10px;
+//             border: none;
+//             border-radius: 10px;
+//             background-color: #007bff;
+//             color: white;
+//             font-size: 1rem;
+//             cursor: pointer;
+            
+//             &:hover {
+//                 background-color: darken(#007bff, 10%);
+//             }
+//         }
+//     }
+// }
