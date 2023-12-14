@@ -103,7 +103,7 @@ def command_task(user, message_output, user_input, user_request_input):
 
 with rti.open_connector(
     config_name = "KFUPM_ParticipantLibrary::KFUPM_Participant",
-    url="./FinalProject.xml") as connector:
+    url="http://3.123.24.195/FinalProject.xml") as connector:
 ##
     user_output = connector.get_output("OfferTypePublisher::userofferinfoTopicWriter")
     message_output = connector.get_output("UserMsgPublisher::msginfoTopicWriter")
